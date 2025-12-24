@@ -1,36 +1,120 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# XAUT-Perp
 
-## Getting Started
+On-chain Perpetual Futures for Real-World Assets (RWAs)
 
-First, run the development server:
+A minimal perpetual trading protocol for tokenized gold (XAUT) built on Mantle Sepolia.  
+Trade long or short with leverage using isolated margin, fully on-chain.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## What is this?
+
+**XAUT-Perp** is a perpetual DEX that lets users:
+
+- Go long or short on gold (XAUT)
+- Choose any leverage
+- Trade with any margin amount
+- Close partial or full positions
+- Get real-time PnL & leverage
+
+All risk checks, margin logic, and liquidations happen **on-chain**.
+
+---
+
+## Features
+
+- 📈 **Long & Short** perpetual positions
+- ⚖️ **Isolated margin** system
+- 🔁 **Partial / full close**
+- 💸 **Trading fees** (protocol-owned)
+- 🔥 **Permissionless liquidations**
+- 🧠 **Oracle-based pricing**
+- ⛓️ **100% on-chain** core logic
+
+---
+
+## Tech Stack
+
+### Smart Contracts
+- Solidity ^0.8.19
+- OpenZeppelin
+- Custom Gold (XAUT) Oracle Adapter using Pyth
+
+### Frontend
+- Next.js (App Router)
+- wagmi + RainbowKit
+- ethers v6
+- TailwindCSS
+- lightweight-charts
+
+---
+
+## Architecture
+
+```
+Frontend (Next.js)
+      ↓
+PerpMarket.sol
+      ↓
+GoldOracleAdapter
+      ↓
+XAUT / Gold Price Feed
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Core Parameters
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Parameter | Value |
+|-----------|-------|
+| Initial Margin | 10% |
+| Maintenance Margin | 5% |
+| Taker Fee | 0.05% |
+| Liquidation Reward | 10% |
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Status
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- ✅ Core perp logic complete
+- ✅ Frontend trading live
+- ✅ Liquidations enabled
+- 🚧 Funding rate (future work)
+- 🚧 Multiple markets
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Disclaimer
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This project is **NOT audited** and is built for:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Hackathons
+- Learning
+- Prototyping
+
+**Do not use with real funds.**
+
+---
+
+## Roadmap
+
+- [ ] Funding rates
+- [ ] Multiple RWAs
+- [ ] Cross-margin
+- [ ] Position NFTs
+- [ ] Insurance fund
+- [ ] Keeper bots
+
+---
+
+## Contributing
+
+PRs welcome! Please open an issue first to discuss major changes.
+
+---
+
+## Contact
+
+For questions or feedback, open an issue or reach out on Twitter.
+
+---
