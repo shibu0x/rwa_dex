@@ -87,9 +87,9 @@ export default function Home() {
             <button
               key={m}
               onClick={() => setMarket(m as MarketKey)}
-              className={`px-3 py-1 rounded-md font-mono border ${market === m
-                  ? "bg-primary text-primary-foreground border-primary"
-                  : "bg-background text-muted-foreground hover:border-border"
+              className={`px-3 py-1 rounded-md font-mono border cursor-pointer ${market === m
+                ? "bg-primary text-primary-foreground border-primary"
+                : "bg-background text-muted-foreground hover:border-border"
                 }`}
             >
               {m}
@@ -102,7 +102,7 @@ export default function Home() {
             <div className="flex gap-2 mb-6">
               <button
                 onClick={() => setActiveTab("market")}
-                className={`px-4 py-1.5 border rounded-lg text-sm font-mono ${activeTab === "market" ? "bg-primary text-white" : "text-muted-foreground"
+                className={`px-4 py-1.5 border rounded-lg text-sm font-mono cursor-pointer ${activeTab === "market" ? "bg-primary text-white dark:text-black" : "text-muted-foreground"
                   }`}
               >
                 Market
@@ -110,7 +110,7 @@ export default function Home() {
 
               <button
                 onClick={() => setActiveTab("positions")}
-                className={`px-4 py-1.5 border rounded-lg text-sm font-mono ${activeTab === "positions" ? "bg-primary text-white" : "text-muted-foreground"
+                className={`px-4 py-1.5 border rounded-lg text-sm font-mono cursor-pointer ${activeTab === "positions" ? "bg-primary text-white dark:text-black" : "text-muted-foreground"
                   }`}
               >
                 Positions
@@ -143,7 +143,7 @@ export default function Home() {
                   {(!pricesReady || initialLoad) && (
                     <div className="flex flex-col items-center h-[300px] justify-center text-muted-foreground">
                       <Loader2 className="w-8 h-8 animate-spin" />
-                      <p className="mt-4">Loading prices…</p>
+                      <p className="mt-4">Loading positions…</p>
                     </div>
                   )}
 
