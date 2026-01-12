@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 
 let OHLC_CACHE: Record<string, { timestamp: number; data: any[] }> = {};
-const CACHE_TTL = 30 * 60 * 1000;
+const CACHE_TTL = 60 * 60 * 1000;
 
 export async function GET(
   req: Request,
@@ -51,10 +51,25 @@ export async function GET(
       ohlc = cached.data;
     } else {
       try {
-        const cg = await fetch(
+        const response = await fetch(
           `https://api.coingecko.com/api/v3/coins/${cgId}/ohlc?vs_currency=usd&days=${days}`,
           { cache: "no-store" }
-        ).then((r) => r.json());
+        );
+
+        if (response.status === 429) {
+          console.warn(`CoinGecko rate limit hit for ${cgId}, using cached/fallback data`);
+          throw new Error("Rate limited");
+        }
+
+        if (!response.ok) {
+          throw new Error(`CoinGecko API returned ${response.status}`);
+        }
+
+        const cg = await response.json();
+
+        if (!Array.isArray(cg)) {
+          throw new Error("Invalid CoinGecko response format");
+        }
 
         ohlc = cg.map((c: any) => ({
           time: Math.floor(c[0] / 1000),
@@ -68,8 +83,9 @@ export async function GET(
           timestamp: now,
           data: ohlc,
         };
-      } catch {
-        ohlc = cached?.data || fallbackOHLC(price);
+      } catch (err: any) {
+        console.error(`CoinGecko API error for ${cgId} (${timeframe}):`, err.message);
+        ohlc = cached?.data || fallbackOHLC(price, timeframe);
       }
     }
 
@@ -79,8 +95,9 @@ export async function GET(
       cached: !!cached,
     });
   } catch (e: any) {
+    console.error("Market API error:", e.message);
     return NextResponse.json(
-      { error: e.message, ohlc: fallbackOHLC(100) },
+      { error: e.message, ohlc: fallbackOHLC(100, timeframe) },
       { status: 500 }
     );
   }
@@ -104,10 +121,20 @@ function mapPythToCoingecko(feed: string) {
   return map[feed.toLowerCase()];
 }
 
-function fallbackOHLC(base: number) {
+function fallbackOHLC(base: number, timeframe: string = "24h") {
   const now = Math.floor(Date.now() / 1000);
+
+  const intervalMap: Record<string, number> = {
+    "24h": 1728,
+    "7d": 12096,
+    "30d": 51840,
+    "1y": 630720,
+  };
+
+  const interval = intervalMap[timeframe] || 1728;
+
   return Array.from({ length: 50 }).map((_, i) => {
-    const t = now - (50 - i) * 300; 
+    const t = now - (50 - i) * interval;
     const n = base * (1 + (Math.random() - 0.5) * 0.01);
     return {
       time: t,
