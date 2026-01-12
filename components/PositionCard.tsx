@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
@@ -86,14 +85,22 @@ export const PositionCard = ({
             <span className="font-mono font-bold">{closePercent}%</span>
           </div>
 
-          <Slider
-            max={100}
-            min={1}
-            step={1}
-            value={[closePercent]}
-            onValueChange={(vals) => setClosePercent(vals[0])}
-            className="py-1"
-          />
+          {/* Percentage Buttons */}
+          <div className="grid grid-cols-4 gap-2">
+            {[25, 50, 75, 100].map((pct) => (
+              <button
+                key={pct}
+                onClick={() => setClosePercent(pct)}
+                className={`px-3 py-1.5 rounded-md text-xs font-mono border transition-all cursor-pointer ${
+                  closePercent === pct
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-background text-muted-foreground hover:border-primary/50"
+                }`}
+              >
+                {pct}%
+              </button>
+            ))}
+          </div>
 
           <Button
             size="sm"

@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
 import { MarketKey } from "@/lib/markets";
+import { PriceImpact } from "@/components/PriceImpact";
 
 type TradePanelProps = {
   market: MarketKey;
@@ -50,7 +51,7 @@ export const TradePanel = ({
       </CardHeader>
 
       <CardContent className="space-y-6 pt-4">
-        {/* Leverage Slider */}
+        
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <Label>Leverage</Label>
@@ -65,13 +66,11 @@ export const TradePanel = ({
           />
         </div>
 
-        {/* Margin */}
         <div className="space-y-2">
           <Label>Margin (MNT)</Label>
           <Input type="number" value={margin} onChange={(e) => setMargin(e.target.value)} />
         </div>
 
-        {/* Summary */}
         <div className="bg-secondary p-4 rounded-xl space-y-3">
           <div className="flex justify-between">
             <span>Position Size</span>
@@ -90,6 +89,14 @@ export const TradePanel = ({
             <span>{margin} MNT</span>
           </div>
         </div>
+
+        <PriceImpact
+          entryPrice={price}
+          notional={notional}
+          margin={margin}
+          leverage={leverage}
+          marketName={market}
+        />
 
         {/* Buttons */}
         <div className="grid grid-cols-2 gap-4">

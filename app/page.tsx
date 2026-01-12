@@ -120,7 +120,7 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-8">
             <AnimatePresence mode="wait">
-              {activeTab === "market" ? (
+              {activeTab === "market" && (
                 <motion.div key="market" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   <MarketHeader price={price} priceChange={priceChange} marketCap={marketCap} />
 
@@ -154,8 +154,10 @@ export default function Home() {
                     market={market}
                   />
                 </motion.div>
-              ) : (
-                <motion.div key="positions">
+              )}
+
+              {activeTab === "positions" && (
+                <motion.div key="positions" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
 
                   {!isConnected && (
                     <div className="flex flex-col items-center h-[300px] justify-center text-muted-foreground">
